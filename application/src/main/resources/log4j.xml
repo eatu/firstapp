@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true"
+                     xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{dd MMM yy HH:mm:ss} %5p %c{1} - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"/>
+        <param name="file" value="out/learning.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+        </layout>
+    </appender>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+        <!--<appender-ref ref="fileAppender"/>-->
+    </root>
+
+</log4j:configuration>
+<Configuration
+status="warn" strict="true"
+packages="com.sap.hcp.cf.log4j2.converter,com.sap.hcp.cf.log4j2.layout">
+<Appenders>
+    <Console name="STDOUT-JSON" target="SYSTEM_OUT" follow="true">
+        <JsonPatternLayout charset="utf-8"/>
+    </Console>
+    <Console name="STDOUT" target="SYSTEM_OUT" follow="true">
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%mdc] - %msg%n"/>
+    </Console>
+</Appenders>
+<Loggers>
+    <Root level="${LOG_ROOT_LEVEL:-WARN}">
+        <!-- Use 'STDOUT' instead for human-readable output -->
+        <AppenderRef ref="STDOUT-JSON" />
+    </Root>
+    <!-- request metrics are reported using INFO level, so make sure the instrumentation loggers are set to that level -->
+    <Logger name="com.sap.hcp.cf" level="INFO"/>
+</Loggers>
+</Configuration>
